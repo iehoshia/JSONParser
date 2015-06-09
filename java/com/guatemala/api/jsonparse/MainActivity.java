@@ -3,10 +3,13 @@ package com.guatemala.api.jsonparse;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -52,8 +55,26 @@ public class MainActivity extends ActionBarActivity {
         protected String doInBackground(String... strings) {
                 try{
                     JsonParser jParser = new JsonParser();
+                    JSONObject json = jParser.getJSONFromUrl(StringUrl);
+                    dataJsonArr = json.getJSONArray("Users");
 
+                    for (int i=0; i<dataJsonArr.length(); i++){
+                        JSONObject c = dataJsonArr.getJSONObject(i);
+
+                        String firstname = c.getString("firstname");
+                        String lastname = c.getString("lastname");
+                        String username = c.getString("username");
+
+                        Log.e(TAG, "firstname"+ firstname
+                                   + "lastname" + lastname
+                                    + "username" + username);
+
+                    }
+
+                } catch (JSONException e){
+                    e.printStackTrace();;
                 }
+            return null;
         }
     }
 }
