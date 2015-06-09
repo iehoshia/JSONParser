@@ -6,18 +6,33 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 
 public class MainActivity extends ActionBarActivity {
+
+    ListView lstView;
+    ArrayAdapter<String> adapter;
+    ArrayList<String> valors = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        lstView = (ListView) findViewById(R.id.lstJSON);
+
+        adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_expandable_list_item_1,
+                valors);
+        lstView.setAdapter(adapter);
+
 
         new AsyncTaskParseJson().execute();
     }
@@ -51,6 +66,7 @@ public class MainActivity extends ActionBarActivity {
         String StringUrl = "http://www.apixela.net/android/json.html";
         JSONArray dataJsonArr = null;
 
+
         @Override
         protected String doInBackground(String... strings) {
                 try{
@@ -65,9 +81,9 @@ public class MainActivity extends ActionBarActivity {
                         String lastname = c.getString("lastname");
                         String username = c.getString("username");
 
-                        Log.e(TAG, "firstname"+ firstname
-                                   + "lastname" + lastname
-                                    + "username" + username);
+                        Log.e(TAG, "firstname: "+ firstname
+                                   + " lastname: " + lastname
+                                    + " username: " + username);
 
                     }
 
@@ -75,6 +91,33 @@ public class MainActivity extends ActionBarActivity {
                     e.printStackTrace();;
                 }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(String strFromDoInBg){
+            try{
+                JsonParser jParser = new JsonParser();
+                JSONObject json = jParser.getJSONFromUrl(StringUrl);
+                dataJsonArr = json.getJSONArray("Users");
+
+                for (int i=0; i<dataJsonArr.length(); i++){
+                    JSONObject c = dataJsonArr.getJSONObject(i);
+
+                    String firstname = c.getString("firstname");
+                    String lastname = c.getString("lastname");
+                    String username = c.getString("username");
+
+                    valors.add(TAG+ "firstname: "+ firstname
+                            + " lastname: " + lastname
+                            + " username: " + username);
+                    adapter.notifyDataSetChanged();
+
+
+                }
+
+            } catch (JSONException e){
+                e.printStackTrace();;
+            }
         }
     }
 }
