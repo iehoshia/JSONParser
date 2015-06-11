@@ -11,6 +11,6 @@
         android:layout_weight = "1"
         android:id="@+id/lstJSON"
         style="@style/ThemeOverlay.AppCompat.Dark"
-        android:background="#ff1518ff"></ListView>
+        android:background="#ff1518ff"/>
 
 </RelativeLayout>
