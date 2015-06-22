@@ -11,10 +11,7 @@
         android:layout_weight = "1"
         android:id="@android:id/list"
         style="@style/ThemeOverlay.AppCompat.Dark"
-<<<<<<< HEAD
+
         android:background="#ff000000"></ListView>
-=======
-        android:background="#ff1518ff"/>
->>>>>>> origin/master
 
 </RelativeLayout>
